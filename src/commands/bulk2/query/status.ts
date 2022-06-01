@@ -27,6 +27,10 @@ export default class Org extends SfdxCommand {
       description: messages.getMessage('nameFlagDescription'),
       required: true,
     }),
+    tooling: flags.boolean({
+      char: 't',
+      description: 'denotes that the tooling api should be used',
+    }),
   };
 
   // Comment this out if your command does not require an org username
@@ -36,11 +40,14 @@ export default class Org extends SfdxCommand {
   protected static requiresProject = false;
 
   public async run(): Promise<BulkJobInfoResponse> {
+    const tooling = this.flags.tooling as boolean;
+
     const conn = this.org.getConnection();
     const bulkconnect: BulkAPI2Connection = {
       accessToken: conn.accessToken,
       apiVersion: conn.getApiVersion(),
       instanceUrl: conn.instanceUrl,
+      isTooling: tooling,
     };
     try {
       const response: BulkJobInfoResponse = await new BulkAPI2(bulkconnect).getBulkQueryJobInfo(this.flags.jobid);

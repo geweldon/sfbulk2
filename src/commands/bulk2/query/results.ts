@@ -29,7 +29,12 @@ export default class BulkQuryResults extends SfdxCommand {
     }),
     path: flags.filepath({
       char: 'p',
-      description: messages.getMessage('queryFlagDescription'),
+      required: true,
+      description: 'path of the file to output to',
+    }),
+    tooling: flags.boolean({
+      char: 't',
+      description: 'denotes that the tooling api should be used',
     }),
   };
 
@@ -43,6 +48,8 @@ export default class BulkQuryResults extends SfdxCommand {
   protected static requiresProject = false;
 
   public async run(): Promise<string> {
+    const tooling = this.flags.tooling as boolean;
+
     // this.org is guaranteed because requiresUsername=true, as opposed to supportsUsername
     const conn = this.org.getConnection();
 
@@ -50,6 +57,7 @@ export default class BulkQuryResults extends SfdxCommand {
       accessToken: conn.accessToken,
       apiVersion: '51.0',
       instanceUrl: conn.instanceUrl,
+      isTooling: tooling,
     };
     try {
       const bulkapi2 = new BulkAPI2(bulkconnect);

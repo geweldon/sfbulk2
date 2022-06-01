@@ -26,6 +26,10 @@ export default class BulkQuery extends SfdxCommand {
       char: 'q',
       description: messages.getMessage('queryFlagDescription'),
     }),
+    tooling: flags.boolean({
+      char: 't',
+      description: 'denotes that the tooling api should be used',
+    }),
   };
 
   // Comment this out if your command does not require an org username
@@ -39,6 +43,7 @@ export default class BulkQuery extends SfdxCommand {
 
   public async run(): Promise<BulkQueryResponse> {
     const query = this.flags.query as string;
+    const tooling = this.flags.tooling as boolean;
 
     // this.org is guaranteed because requiresUsername=true, as opposed to supportsUsername
     const conn = this.org.getConnection();
@@ -47,6 +52,7 @@ export default class BulkQuery extends SfdxCommand {
       accessToken: conn.accessToken,
       apiVersion: '51.0',
       instanceUrl: conn.instanceUrl,
+      isTooling: tooling,
     };
     try {
       const bulkapi2 = new BulkAPI2(bulkconnect);
