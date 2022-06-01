@@ -1,7 +1,17 @@
 [
   {
-    "command": "hello:org",
-    "plugin": "@salesforce/plugin-template",
-    "flags": ["apiversion", "force", "json", "loglevel", "name", "targetdevhubusername", "targetusername"]
+    "command": "bulk2:query",
+    "plugin": "sfbulk2api",
+    "flags": ["apiversion", "json", "loglevel", "query", "targetusername", "tooling"]
+  },
+  {
+    "command": "bulk2:query:results",
+    "plugin": "sfbulk2api",
+    "flags": ["apiversion", "jobid", "json", "loglevel", "path", "targetusername", "tooling"]
+  },
+  {
+    "command": "bulk2:query:status",
+    "plugin": "sfbulk2api",
+    "flags": ["apiversion", "jobid", "json", "loglevel", "targetusername", "tooling"]
   }
 ]
