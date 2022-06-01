@@ -77,6 +77,9 @@
     "topics": {
       "bulk2": {
         "description": "Commands for interacting with the SF Bulk2 API"
+      },
+      "bulk2:query": {
+        "description": "Commands for querying using the Bulk2 API"
       }
     }
   },
