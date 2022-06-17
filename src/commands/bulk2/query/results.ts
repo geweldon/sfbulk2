@@ -29,7 +29,6 @@ export default class BulkQuryResults extends SfdxCommand {
     }),
     path: flags.filepath({
       char: 'p',
-      required: true,
       description: 'path of the file to output to',
     }),
     tooling: flags.boolean({
@@ -49,6 +48,7 @@ export default class BulkQuryResults extends SfdxCommand {
 
   public async run(): Promise<string> {
     const tooling = this.flags.tooling as boolean;
+    const path = this.flags.path as fs.PathLike;
 
     // this.org is guaranteed because requiresUsername=true, as opposed to supportsUsername
     const conn = this.org.getConnection();
@@ -62,7 +62,7 @@ export default class BulkQuryResults extends SfdxCommand {
     try {
       const bulkapi2 = new BulkAPI2(bulkconnect);
       const data = await bulkapi2.getBulkqueryResults(this.flags.jobid);
-      fs.writeFileSync(this.flags.path, data, 'utf8');
+      if (path) fs.writeFileSync(path, data, 'utf8');
       this.ux.log(data);
       return data;
     } catch (ex) {
